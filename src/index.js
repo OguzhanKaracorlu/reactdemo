@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import './bootstrap-override.scss'
 import App from './App';
-import UserSignUpPage from './UserSignUpPage';
+import UserSignUpPage from './pages/UserSignUpPage';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

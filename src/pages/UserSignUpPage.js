@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import {singup} from '../api/apiCalls'
 
 class UserSignUpPage extends React.Component {
 
@@ -67,7 +67,7 @@ class UserSignUpPage extends React.Component {
         }
     */
 
-    onClickSignUp = event => {
+    onClickSignUp = async event => {
         event.preventDefault();
         const {username, displayName, password} = this.state;
         const body = {
@@ -76,15 +76,24 @@ class UserSignUpPage extends React.Component {
             password
         };
         this.setState({pendingApiCall: true});
-        axios.post('/api/users', body)
-            .then((response) => {
-                this.setState({pendingApiCall: false});
-            }).catch(error => {
-            this.setState({pendingApiCall: false});
-        })
+
+        try {
+            const response = await singup(body);
+        } catch (error) {
+
+        }
+        this.setState({pendingApiCall: false});
+
+        // singup(body)
+        //     .then((response) => {
+        //         this.setState({pendingApiCall: false});
+        //     }).catch(error => {
+        //     this.setState({pendingApiCall: false});
+        // })
     };
 
     render() {
+        const {pendingApiCall} = this.state;
         return (
             <div className="container">
                 <form>
@@ -118,14 +127,13 @@ class UserSignUpPage extends React.Component {
                             /*disabled={!this.state.agreedClicked}*/
                                 disabled={this.state.pendingApiCall}
                                 onClick={this.onClickSignUp}>
-                            {this.state.pendingApiCall && <span className="spinner-border spinner-border-sm"> </span>} Sign Up
-                    </button>
+                            {pendingApiCall &&
+                                <span className="spinner-border spinner-border-sm"> </span>} Sign Up
+                        </button>
+                    </div>
+                </form>
             </div>
-
-    </form>
-    </div>
-    )
-        ;
+        );
     }
 }
 
